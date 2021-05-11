@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="TeorVerLab1" />
-        <module name="Math_Stat" />
       </profile>
     </annotationProcessing>
   </component>

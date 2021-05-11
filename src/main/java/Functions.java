@@ -1,16 +1,16 @@
 import java.util.*;
 
-public class Calculations {
+public class Functions {
     double[] values;
     Vector<Double> x_i = new Vector<>();
     Vector<Integer> n_i = new Vector<>();
     Vector<Double> p_i = new Vector<>();
 
-    public Calculations(double[] elements) {
-        this.values = elements;
+    public Functions(double[] values) {
+        this.values = values;
     }
 
-    public void sort() {
+    public void getVarValues() {
         Arrays.sort(this.values);
         System.out.println(">>> Вариационный ряд <<<\n" + Arrays.toString(values) + "\n");
     }
@@ -52,11 +52,11 @@ public class Calculations {
         System.out.printf(">>> Cреднеквадратическое отклонение <<<\n%.2f\n\n", Math.sqrt(disperancy));
     }
 
-    public double calculateH() {
-        return Math.round((values[values.length - 1] - values[0]) / (1 + ((Math.log(values.length) / Math.log(2)))));
+    public double getH() {
+        return (values[values.length - 1] - values[0]) / (1 + ((Math.log(values.length) / Math.log(2))));
     }
 
-    public int calculateM() {
+    public int getM() {
         return (int) Math.ceil(1 + (Math.log(values.length) / Math.log(2)));
     }
 
@@ -74,8 +74,8 @@ public class Calculations {
 
     public void drawEmpiricFunction() {
         DrawChart drawChart = new DrawChart("x", "f(X)", "Эмпирическая функция");
-        double h = p_i.get(0);
 
+        double h = p_i.get(0);
         drawChart.addChart("x <= " + x_i.get(0), x_i.get(0) - 0.5, x_i.get(0), 0);
         for (int i = 0; i < x_i.size() - 1; i++) {
             drawChart.addChart(x_i.get(i) + " < x <= " + x_i.get(i + 1), x_i.get(i), x_i.get(i + 1), h);
@@ -87,27 +87,42 @@ public class Calculations {
 
     public void drawFrequencyPolygon() {
         DrawChart frequencyPolygon = new DrawChart("x", "p_i", "Полигон частот");
-        for (int i = 0; i < x_i.size() - 1; i++)
-            frequencyPolygon.PolygonalChart(x_i.get(i), p_i.get(i));
 
-        frequencyPolygon.PolygonalChart(x_i.get(x_i.size() - 1), p_i.get(p_i.size() - 1));
+        double x_start = values[0] - getH() / 2;
+        for (int i = 0; i < getM(); i++) {
+            int count = 0;
+            for (double value : values)
+                if (value >= x_start && value < (x_start + getH()))
+                    count++;
+
+            frequencyPolygon.PolygonalChart(x_start + getH() / 2, (double) count / (double) values.length);
+            System.out.println("[ " + x_start + " : " + (x_start+getH()) + " ) -> " + (double) count / (double) values.length);
+
+            x_start += getH();
+        }
         frequencyPolygon.plotPolygon("FrequencyPolygon");
     }
 
     public void drawHistogram(int size) {
         DrawChart Histogram = new DrawChart("x", "p_i / h", "Гистограмма частот");
-        double x_start = values[0] - calculateH() / 2;
-        for (int i = 0; i < calculateM(); i++) {
+        double x_start = values[0] - getH() / 2;
+        for (int i = 0; i < getM(); i++) {
             int s = 0;
             for (double value : values)
-                if (value >= x_start && value < (x_start + calculateH())) {
+                if (value >= x_start && value < (x_start + getH())) {
                     s++;
                 }
 
-            Histogram.addHistogram(x_start + " : " + x_start + calculateH(), x_start, x_start + calculateH(),
-                    ((double) s / (double) size) / calculateH());
-            x_start += calculateH();
+            Histogram.addHistogram(x_start + " : " + x_start + getH(), x_start, x_start + getH(),
+                    ((double) s / (double) size) / getH());
+            x_start += getH();
         }
         Histogram.plot("Histogram");
+    }
+
+    public void printVectors() {
+        for (int i = 0; i < x_i.size(); i++) {
+            System.out.println(x_i.get(i) + " " + n_i.get(i) + " " + p_i.get(i));
+        }
     }
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
+import static org.knowm.xchart.style.colors.ChartColor.BLACK;
 import static org.knowm.xchart.style.lines.SeriesLines.SOLID;
 
 public class DrawChart {
@@ -20,6 +21,8 @@ public class DrawChart {
         chart = new XYChartBuilder().theme(Styler.ChartTheme.Matlab)
                 .title(Title).xAxisTitle(X).yAxisTitle(Y)
                 .build();
+        //chart.getStyler().setPlotGridLinesColor(new Color(0,0,0));
+        //chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Step);
         chart.setCustomXAxisTickLabelsFormatter((x) -> String.format("%.2f", x));
         chart.setCustomYAxisTickLabelsFormatter((y) -> String.format("%.2f", y));
         chart.getStyler().setSeriesLines(new BasicStroke[]{SOLID});

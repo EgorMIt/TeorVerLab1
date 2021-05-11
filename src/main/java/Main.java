@@ -12,17 +12,19 @@ public class Main {
         for (int i = 0; i < n; i++)
             elements[i] = scanner.nextDouble();
 
-        Calculations calculations = new Calculations(elements);
-        calculations.sort();
-        calculations.minMaxValues();
-        calculations.selectionSize();
-        calculations.disperancyCalculation();
+        Functions functions = new Functions(elements);
+        functions.getVarValues();
+        functions.minMaxValues();
+        functions.selectionSize();
+        functions.disperancyCalculation();
 
-        calculations.calculateEmpiricFunction();
-        calculations.drawEmpiricFunction();
+        functions.calculateEmpiricFunction();
+        functions.drawEmpiricFunction();
 
-        calculations.drawFrequencyPolygon();
+        functions.drawFrequencyPolygon();
 
-        calculations.drawHistogram(elements.length);
+        functions.drawHistogram(elements.length);
+
+        functions.printVectors();
     }
 }
